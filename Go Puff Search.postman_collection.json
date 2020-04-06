@@ -1,0 +1,337 @@
+{
+	"info": {
+		"_postman_id": "c05e2813-d3fd-4ce2-a94e-04ff279a2812",
+		"name": "Go Puff Search",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Basic Request - out of delivery area",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "fddde860-9722-422b-adf0-79fe84d9ae04",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Should have 14 Products\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    console.log(\"number of products is \" + jsonData.products.length);",
+							"    pm.expect(jsonData.products.length).to.equal(14);",
+							"});",
+							"",
+							"pm.test(\"All results should contain the term Hostess\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    var countHostess = 0;",
+							"    for(i=0;i<jsonData.products.length;i++){",
+							"        if(jsonData.products[i].name.includes(\"Hostess\")){",
+							"            countHostess++;",
+							"        }",
+							"        ",
+							"    }",
+							"    pm.expect(countHostess).to.equal(jsonData.products.length);",
+							"    console.log(countHostess + \" equals \" + jsonData.products.length);",
+							"});",
+							"",
+							"pm.test(\"Should Return the Correct Delivery Area in Search\", function () {",
+							"    let outOfDeliveryVar = pm.globals.get(\"outOfDeliveryLocation\");",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.search_meta.location_id).to.equal(outOfDeliveryVar);",
+							"});",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "0c8dac13-d5a0-4f65-95d0-c99b0e441e5a",
+						"exec": [
+							"pm.globals.set('outOfDeliveryLocation', '-1');"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://prodcat.gopuff.com/api/search?facet_limit=1&text=hostess donettes&facet=class&location_id={{outOfDeliveryLocation}}&device_id=web&page=1",
+					"protocol": "https",
+					"host": [
+						"prodcat",
+						"gopuff",
+						"com"
+					],
+					"path": [
+						"api",
+						"search"
+					],
+					"query": [
+						{
+							"key": "facet_limit",
+							"value": "1"
+						},
+						{
+							"key": "text",
+							"value": "hostess donettes"
+						},
+						{
+							"key": "facet",
+							"value": "class"
+						},
+						{
+							"key": "location_id",
+							"value": "{{outOfDeliveryLocation}}"
+						},
+						{
+							"key": "device_id",
+							"value": "web"
+						},
+						{
+							"key": "page",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Basic Request - Philadelphia Delivery Area",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "fddde860-9722-422b-adf0-79fe84d9ae04",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Should have 14 Products\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    console.log(\"number of products is \" + jsonData.products.length);",
+							"    pm.expect(jsonData.products.length).to.equal(14);",
+							"});",
+							"",
+							"pm.test(\"All results should contain the term Hostess\", function () {",
+							"    jsonData = pm.response.json();",
+							"    var countHostess = 0;",
+							"    for(i=0;i<jsonData.products.length;i++){",
+							"        if(jsonData.products[i].name.includes(\"Hostess\")){",
+							"            countHostess++;",
+							"        }",
+							"        ",
+							"    }",
+							"    pm.expect(countHostess).to.equal(jsonData.products.length);",
+							"    console.log(countHostess + \" equals \" + jsonData.products.length);",
+							"});",
+							"",
+							"pm.test(\"Should Return the Correct Delivery Area in Search\", function () {",
+							"    let phillyDeliveryVar = pm.globals.get(\"phillyDeliveryLocation\");",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.search_meta.location_id).to.equal(phillyDeliveryVar);",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "ff545aaf-5eb6-4e56-9e8a-cf29dcfd3bb2",
+						"exec": [
+							"pm.globals.set('phillyDeliveryLocation', '6');"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://prodcat.gopuff.com/api/search?facet_limit=1&text=hostess donettes&facet=class&location_id={{phillyDeliveryLocation}}&device_id=web&page=1",
+					"protocol": "https",
+					"host": [
+						"prodcat",
+						"gopuff",
+						"com"
+					],
+					"path": [
+						"api",
+						"search"
+					],
+					"query": [
+						{
+							"key": "facet_limit",
+							"value": "1"
+						},
+						{
+							"key": "text",
+							"value": "hostess donettes"
+						},
+						{
+							"key": "facet",
+							"value": "class"
+						},
+						{
+							"key": "location_id",
+							"value": "{{phillyDeliveryLocation}}"
+						},
+						{
+							"key": "device_id",
+							"value": "web"
+						},
+						{
+							"key": "page",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Base Request No search text/product id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "033bedd2-fd72-41e4-b992-022821bf4332",
+						"exec": [
+							"pm.test(\"Status code is 422\", function () {",
+							"    pm.response.to.have.status(422);",
+							"});",
+							"",
+							"pm.test(\"Body provides help info to fix request\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"Please pass a location_id and either product_id or product_ids or text on the query string\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://prodcat.gopuff.com/api/search?facet_limit=1&text=&facet=class&location_id=-1&device_id=web&page=2",
+					"protocol": "https",
+					"host": [
+						"prodcat",
+						"gopuff",
+						"com"
+					],
+					"path": [
+						"api",
+						"search"
+					],
+					"query": [
+						{
+							"key": "facet_limit",
+							"value": "1"
+						},
+						{
+							"key": "text",
+							"value": ""
+						},
+						{
+							"key": "facet",
+							"value": "class"
+						},
+						{
+							"key": "location_id",
+							"value": "-1"
+						},
+						{
+							"key": "device_id",
+							"value": "web"
+						},
+						{
+							"key": "page",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Base Request No location",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f80ddf90-eac0-4946-a479-c1a3903be60f",
+						"exec": [
+							"pm.test(\"Status code is 422\", function () {",
+							"    pm.response.to.have.status(422);",
+							"});",
+							"",
+							"pm.test(\"Body provides help info to fix request\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"Please pass a location_id and either product_id or product_ids or text on the query string\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://prodcat.gopuff.com/api/search?facet_limit=1&text=pasta&facet=class&location_id=&device_id=web&page=2",
+					"protocol": "https",
+					"host": [
+						"prodcat",
+						"gopuff",
+						"com"
+					],
+					"path": [
+						"api",
+						"search"
+					],
+					"query": [
+						{
+							"key": "facet_limit",
+							"value": "1"
+						},
+						{
+							"key": "text",
+							"value": "pasta"
+						},
+						{
+							"key": "facet",
+							"value": "class"
+						},
+						{
+							"key": "location_id",
+							"value": ""
+						},
+						{
+							"key": "device_id",
+							"value": "web"
+						},
+						{
+							"key": "page",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
